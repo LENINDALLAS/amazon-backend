@@ -19,6 +19,15 @@ mongoose.connect(process.env.MONGODB_URL || " mongodb://localhost/amazona", {
   useCreateIndex: true,
 });
 
+mongoose.Promise = global.Promise;
+
+mongoose.connection.once("open", () => {
+  console.log("Database Connected...");
+});
+mongoose.connection.on("error", (error) => {
+  console.log("Error connecting database..."), error;
+});
+
 app.use("/api/users", userRouter);
 
 app.use("/api/products", productRouter);
